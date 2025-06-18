@@ -4,9 +4,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View } from "react-native";
 import { BlurView } from "expo-blur";
 import HomeScreen from "../screens/HomeScreen";
-import AddPromptScreen from "../screens/AddPromptScreen";
+import AddPromptScreen from "../screens/AddPromptScreen"; 
 import ProfileScreen from "../screens/ProfileScreen";
 import { House, Plus, User } from "phosphor-react-native";
+
 
 // On crée le type de props de TabBarIcon
 type TabBarIconProps = {

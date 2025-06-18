@@ -2,8 +2,10 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import BottomTabs from "./app/navigation/BottomTabs";
+import MainNavigator from "./app/navigation/MainNavigator";
 import { useFonts } from "expo-font";
+import { PromptProvider } from './app/context/PromptContext';
+
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -21,7 +23,9 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <BottomTabs />
+      <PromptProvider>
+        <MainNavigator />
+      </PromptProvider>
     </NavigationContainer>
   );
 }
