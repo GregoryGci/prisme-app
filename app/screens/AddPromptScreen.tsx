@@ -45,6 +45,11 @@ const AddPromptScreen = () => {
     setLoading(false);
   };
 
+  const { prompts, removePrompt } = usePrompt();
+
+  // 📋 Filtrer les prompts planifiés uniquement
+  const scheduledPrompts = prompts.filter(p => p.scheduled);
+
   return (
     <View style={styles.container}>
       <AppText style={styles.header}>Demander à l'IA</AppText>
@@ -71,6 +76,24 @@ const AddPromptScreen = () => {
           📅 Planifier ce prompt à une heure précise
         </Text>
       </TouchableOpacity>
+    
+      {/* 🧠 Liste des prompts programmés */}
+      {scheduledPrompts.length > 0 && (
+        <View style={styles.scheduledList}>
+          <AppText style={styles.subheader}>Prompts planifiés :</AppText>
+          {scheduledPrompts.map((prompt) => (
+            <View key={prompt.id} style={styles.promptItem}>
+              <Text style={styles.promptText}>
+                📌 {prompt.question} — {prompt.scheduled?.hour}h{prompt.scheduled?.minute?.toString().padStart(2, '0')}
+              </Text>
+              <TouchableOpacity onPress={() => removePrompt(prompt.id)}>
+                <Text style={styles.deleteButton}>Supprimer</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      )}
+
     </View>
   );
 };
@@ -78,7 +101,33 @@ const AddPromptScreen = () => {
 export default AddPromptScreen;
 
 const styles = StyleSheet.create({
-  container: { flex: 0.5, padding: 20, justifyContent: 'center' },
+  scheduledList: {
+    marginTop: 30,
+  },
+  subheader: {
+    fontSize: 18,
+    marginBottom: 10,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  promptItem: {
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 8,
+  },
+  promptText: {
+    fontSize: 15,
+    marginBottom: 4,
+  },
+  deleteButton: {
+    color: 'red',
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    textAlign: 'right',
+  },
+
+  container: { flex: 0.7, padding: 20, justifyContent: 'center' },
   header: {
     fontSize: 24,
     fontWeight: 'bold',

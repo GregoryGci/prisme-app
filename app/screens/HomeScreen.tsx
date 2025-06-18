@@ -1,79 +1,81 @@
 import React, { useEffect } from "react";
-import { SafeAreaView, StyleSheet, FlatList, Text, View } from "react-native";
-import AppText from "../components/AppText";
-import { LinearGradient } from "expo-linear-gradient";
+import {
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  View,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import GlassCard from "../components/GlassCard";
+import AppText from "../components/AppText";
 import { usePrompt } from "../context/PromptContext";
+import { Trash } from "phosphor-react-native";
 
 export default function HomeScreen() {
-  const { prompts, checkAndRunScheduledPrompts } = usePrompt();
+  const { prompts, checkAndRunScheduledPrompts, clearPrompts } = usePrompt();
 
+  // ✅ On exécute les prompts planifiés au lancement si l'heure est passée
   useEffect(() => {
-    checkAndRunScheduledPrompts(); // 🔁 Mise à jour des prompts planifiés
+    checkAndRunScheduledPrompts();
   }, []);
 
-  // 🕒 Calcul de l’heure de mise à jour la plus récente
-  const lastUpdateTime = prompts
-    .map((p) => new Date(p.updatedAt))
-    .sort((a, b) => b.getTime() - a.getTime())[0];
+  // ✅ On n’affiche que les prompts ayant une réponse
+  const feedPrompts = prompts.filter((p) => p.response);
 
   return (
-    <LinearGradient
-      colors={["#E1E3F9", "#FBFBFF"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 0, y: 1 }}
-      style={styles.background}
-    >
-      <SafeAreaView style={styles.container}>
-        <AppText style={styles.header} bold>
-          Feed
-        </AppText>
+    <SafeAreaView style={styles.container}>
+      <AppText style={styles.header}>Ton Feed Prism</AppText>
 
-        {lastUpdateTime && (
-          <Text style={styles.info}>
-            🕒 Feed mis à jour à{" "}
-            {lastUpdateTime.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </Text>
+      <FlatList
+        data={[...feedPrompts].reverse()}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <GlassCard
+            title={item.question}
+            content={item.response}
+            source={item.source}
+          />
         )}
+      />
 
-        <FlatList
-          data={prompts}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <GlassCard
-              title={item.question}
-              content={item.response}
-              source={item.source}
-            />
-          )}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.listContent}
-        />
-      </SafeAreaView>
-    </LinearGradient>
+      {/* 🗑 Bouton flottant pour vider les prompts exécutés */}
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() =>
+          Alert.alert(
+            "Vider le feed",
+            "Tu es sûr de vouloir supprimer tous les prompts exécutés ?",
+            [
+              { text: "Annuler", style: "cancel" },
+              { text: "Vider", onPress: () => clearPrompts() },
+            ]
+          )
+        }
+      >
+        <Trash size={26} color="#000" />
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  background: { flex: 1 },
-  container: { flex: 1, paddingHorizontal: 16, paddingTop: 20 },
+  container: {
+    flex: 1,
+    padding: 16,
+  },
   header: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 8,
-    color: "black",
-  },
-  info: {
-    textAlign: "center",
-    fontSize: 14,
     marginBottom: 12,
-    color: "#888",
+    textAlign: "center",
   },
-    listContent: {
-      paddingBottom: 16,
-    },
-  });
+  fab: {
+    position: "absolute",
+    bottom: 100,
+    right: 24,
+    padding: 14,
+  
+    zIndex: 10,
+  },
+});
