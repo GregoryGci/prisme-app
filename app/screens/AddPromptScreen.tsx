@@ -6,6 +6,8 @@ import {
   Button,
   Alert,
   TouchableOpacity,
+  Keyboard,
+  TouchableWithoutFeedback,
   Text,
 } from 'react-native';
 import AppText from '../components/AppText';
@@ -51,6 +53,7 @@ const AddPromptScreen = () => {
   const scheduledPrompts = prompts.filter(p => p.scheduled);
 
   return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View style={styles.container}>
       <AppText style={styles.header}>Demander à l'IA</AppText>
 
@@ -95,6 +98,7 @@ const AddPromptScreen = () => {
       )}
 
     </View>
+    </TouchableWithoutFeedback>
   );
 };
 

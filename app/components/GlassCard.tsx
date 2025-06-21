@@ -11,7 +11,7 @@ export default function GlassCard({ title, content, source }: Props) {
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#C2E9FB', '#A1C4FD']}
+        colors={['#EBDEFF', '#DCC7FF']}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.gradient}

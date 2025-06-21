@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Platform,
   Alert,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AppText from "../components/AppText";
@@ -38,34 +40,36 @@ export default function AddScheduledPromptScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <AppText style={styles.title} bold>
-        Planifier un Prompt
-      </AppText>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+        <AppText style={styles.title} bold>
+          Planifier un Prompt
+        </AppText>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Ex : 3 news tech importantes"
-        value={prompt}
-        onChangeText={setPrompt}
-      />
-
-      <Button title="Choisir l’heure" onPress={() => setShowPicker(true)} />
-      {showPicker && (
-        <DateTimePicker
-          mode="time"
-          value={time}
-          display="default"
-          onChange={handleTimeChange}
+        <TextInput
+          style={styles.input}
+          placeholder="Ex : 3 news tech importantes"
+          value={prompt}
+          onChangeText={setPrompt}
         />
-      )}
 
-      <AppText style={styles.timePreview}>
-        Heure sélectionnée : {time.getHours()}h{time.getMinutes().toString().padStart(2, "0")}
-      </AppText>
+        <Button title="Choisir l’heure" onPress={() => setShowPicker(true)} />
+        {showPicker && (
+          <DateTimePicker
+            mode="time"
+            value={time}
+            display="default"
+            onChange={handleTimeChange}
+          />
+        )}
 
-      <Button title="Planifier le Prompt" onPress={handleSchedule} />
-    </View>
+        <AppText style={styles.timePreview}>
+          Heure sélectionnée : {time.getHours()}h{time.getMinutes().toString().padStart(2, "0")}
+        </AppText>
+
+        <Button title="Planifier le Prompt" onPress={handleSchedule} />
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 

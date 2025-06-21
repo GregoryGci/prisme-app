@@ -14,7 +14,13 @@ import { Trash } from "phosphor-react-native";
 
 export default function HomeScreen() {
   const { prompts, checkAndRunScheduledPrompts, clearPrompts } = usePrompt();
+  const [refreshing, setRefreshing] = React.useState(false);
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await checkAndRunScheduledPrompts();
+    setRefreshing(false);
+  };
   // ✅ On exécute les prompts planifiés au lancement si l'heure est passée
   useEffect(() => {
     checkAndRunScheduledPrompts();
@@ -25,7 +31,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <AppText style={styles.header}>Ton Feed Prism</AppText>
+      <AppText style={styles.header}>Feed</AppText>
 
       <FlatList
         data={[...feedPrompts].reverse()}
@@ -37,6 +43,8 @@ export default function HomeScreen() {
             source={item.source}
           />
         )}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
       />
 
       {/* 🗑 Bouton flottant pour vider les prompts exécutés */}
@@ -65,17 +73,19 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   header: {
-    fontSize: 24,
+    fontSize: 36,
     fontWeight: "bold",
     marginBottom: 12,
     textAlign: "center",
+    color: "#202020	",
+    textShadowColor: "#fff",
   },
   fab: {
     position: "absolute",
     bottom: 100,
     right: 24,
     padding: 14,
-  
+
     zIndex: 10,
   },
 });

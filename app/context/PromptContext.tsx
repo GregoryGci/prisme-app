@@ -66,12 +66,11 @@ export function PromptProvider({ children }: { children: ReactNode }) {
     options?: Partial<Prompt["scheduled"]>
   ) => {
     const now = new Date().toISOString();
-    const isScheduled = !!options;
+    const isScheduled =
+      !!options && options.hour !== undefined && options.minute !== undefined;
 
     // 🧠 Si c’est planifié → on ne génère PAS de réponse tout de suite
-    const response = isScheduled
-      ? ""
-      : await fetchAiResponse(question);
+    const response = isScheduled ? "" : await fetchAiResponse(question);
 
     const newPrompt: Prompt = {
       id: Date.now().toString(),
