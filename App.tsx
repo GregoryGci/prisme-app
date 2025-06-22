@@ -2,9 +2,10 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import MainNavigator from "./app/navigation/MainNavigator";
 import { useFonts } from "expo-font";
-import { PromptProvider } from './app/context/PromptContext';
+import { PromptProvider } from "./app/context/PromptContext";
+import "react-native-gesture-handler";
+import DrawerNavigator from "./app/navigation/DrawerNavigator";
 
 
 export default function App() {
@@ -22,11 +23,11 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <PromptProvider>
-        <MainNavigator />
-      </PromptProvider>
-    </NavigationContainer>
+     <PromptProvider>
+      <NavigationContainer>
+        <DrawerNavigator />
+      </NavigationContainer>
+    </PromptProvider>
   );
 }
 

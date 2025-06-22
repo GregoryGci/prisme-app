@@ -1,14 +1,16 @@
 import React from "react";
-import AppText from "../components/AppText";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerActions } from "@react-navigation/native";
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
 import { List } from "phosphor-react-native";
 
-export default function ProfileScreen() {
+export default function SettingsScreen() {
   const navigation = useNavigation();
+
   return (
-    <View>
+    <View style={{ flex: 1 }}>
+      {/* Header personnalisé */}
+
       <View
         style={{
           flexDirection: "row",
@@ -22,16 +24,13 @@ export default function ProfileScreen() {
         >
           <List size={26} />
         </TouchableOpacity>
-        <Text style={{ fontSize: 18, marginLeft: 16 }}>Profil</Text>
+        <Text style={{ fontSize: 18, marginLeft: 16 }}></Text>
       </View>
-      <View style={styles.container}>
-        <AppText style={styles.text}></AppText>
+
+      {/* Contenu principal */}
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>Paramètres de l'application</Text>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center", alignItems: "center" },
-  text: { fontSize: 24, fontWeight: "600" },
-});

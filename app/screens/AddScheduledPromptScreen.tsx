@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   View,
+  Text,
   TextInput,
   Button,
   StyleSheet,
@@ -8,12 +9,18 @@ import {
   Alert,
   TouchableWithoutFeedback,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AppText from "../components/AppText";
 import { usePrompt } from "../context/PromptContext";
+import { List } from "phosphor-react-native";
+import { useNavigation } from "@react-navigation/native";
+import { DrawerActions } from "@react-navigation/native";
 
-export default function AddScheduledPromptScreen({ onClose }: { onClose: () => void }) {  const { addPrompt } = usePrompt();
+export default function AddScheduledPromptScreen({ onClose }: { onClose: () => void }) {
+  const navigation = useNavigation();
+  const { addPrompt } = usePrompt();
   const [prompt, setPrompt] = useState("");
   const [time, setTime] = useState(new Date(2025, 0, 1, 7, 0)); // 7h00 par défaut
   const [showPicker, setShowPicker] = useState(false);
@@ -39,36 +46,48 @@ export default function AddScheduledPromptScreen({ onClose }: { onClose: () => v
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
-        <AppText style={styles.title} bold>
-          Planifier un Prompt
-        </AppText>
-
-        <TextInput
-          style={styles.input}
-          placeholder="Ex : 3 news tech importantes"
-          value={prompt}
-          onChangeText={setPrompt}
-        />
-
-        <Button title="Choisir l’heure" onPress={() => setShowPicker(true)} />
-        {showPicker && (
-          <DateTimePicker
-            mode="time"
-            value={time}
-            display="default"
-            onChange={handleTimeChange}
-          />
-        )}
-
-        <AppText style={styles.timePreview}>
-          Heure sélectionnée : {time.getHours()}h{time.getMinutes().toString().padStart(2, "0")}
-        </AppText>
-
-        <Button title="Planifier le Prompt" onPress={handleSchedule} />
+    <View style={{ flex: 1 }}>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", paddingTop: 50, paddingHorizontal: 16 }}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+        >
+          <List size={26} />
+        </TouchableOpacity>
+        <Text style={{ fontSize: 18, marginLeft: 16 }}></Text>
       </View>
-    </TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={styles.container}>
+          <AppText style={styles.title} bold>
+            Planifier un Prompt
+          </AppText>
+
+          <TextInput
+            style={styles.input}
+            placeholder="Ex : 3 news tech importantes"
+            value={prompt}
+            onChangeText={setPrompt}
+          />
+
+          <Button title="Choisir l’heure" onPress={() => setShowPicker(true)} />
+          {showPicker && (
+            <DateTimePicker
+              mode="time"
+              value={time}
+              display="default"
+              onChange={handleTimeChange}
+            />
+          )}
+
+          <AppText style={styles.timePreview}>
+            Heure sélectionnée : {time.getHours()}h{time.getMinutes().toString().padStart(2, "0")}
+          </AppText>
+
+          <Button title="Planifier le Prompt" onPress={handleSchedule} />
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
   );
 }
 
