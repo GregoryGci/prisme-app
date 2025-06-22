@@ -1,4 +1,5 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerActions } from "@react-navigation/native";
 import { TouchableOpacity, View, Text } from "react-native";
@@ -8,7 +9,7 @@ export default function SettingsScreen() {
   const navigation = useNavigation();
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#1E1E1E", }}>
       {/* Header personnalisé */}
 
       <View
@@ -34,3 +35,8 @@ export default function SettingsScreen() {
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#1E1E1E",
+  },
+});

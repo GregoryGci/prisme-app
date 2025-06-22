@@ -15,10 +15,13 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import AppText from "../components/AppText";
 import { usePrompt } from "../context/PromptContext";
 import { List } from "phosphor-react-native";
-import { useNavigation } from "@react-navigation/native";
-import { DrawerActions } from "@react-navigation/native";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
 
-export default function AddScheduledPromptScreen({ onClose }: { onClose: () => void }) {
+export default function AddScheduledPromptScreen({
+  onClose,
+}: {
+  onClose: () => void;
+}) {
   const navigation = useNavigation();
   const { addPrompt } = usePrompt();
   const [prompt, setPrompt] = useState("");
@@ -46,9 +49,14 @@ export default function AddScheduledPromptScreen({ onClose }: { onClose: () => v
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#1E1E1E" }}>
       <View
-        style={{ flexDirection: "row", alignItems: "center", paddingTop: 50, paddingHorizontal: 16 }}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          paddingTop: 50,
+          paddingHorizontal: 16,
+        }}
       >
         <TouchableOpacity
           onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
@@ -66,6 +74,7 @@ export default function AddScheduledPromptScreen({ onClose }: { onClose: () => v
           <TextInput
             style={styles.input}
             placeholder="Ex : 3 news tech importantes"
+            placeholderTextColor={"#888"}
             value={prompt}
             onChangeText={setPrompt}
           />
@@ -81,7 +90,8 @@ export default function AddScheduledPromptScreen({ onClose }: { onClose: () => v
           )}
 
           <AppText style={styles.timePreview}>
-            Heure sélectionnée : {time.getHours()}h{time.getMinutes().toString().padStart(2, "0")}
+            Heure sélectionnée : {time.getHours()}h
+            {time.getMinutes().toString().padStart(2, "0")}
           </AppText>
 
           <Button title="Planifier le Prompt" onPress={handleSchedule} />
@@ -92,14 +102,25 @@ export default function AddScheduledPromptScreen({ onClose }: { onClose: () => v
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, justifyContent: "center" },
-  title: { fontSize: 22, textAlign: "center", marginBottom: 20 },
+  container: {
+    flex: 1,
+    padding: 20,
+    justifyContent: "center",
+  },
+  title: { fontSize: 22, textAlign: "center", marginBottom: 20, color: "#fff" },
   input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
+    backgroundColor: "#252525",
+    // 🌫️ Ombre douce
+    shadowColor: "#fff",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.06)",
   },
   timePreview: {
     textAlign: "center",

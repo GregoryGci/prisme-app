@@ -8,7 +8,7 @@ import { List } from "phosphor-react-native";
 export default function ProfileScreen() {
   const navigation = useNavigation();
   return (
-    <View>
+    <View style={{ flex: 1, backgroundColor: "#1E1E1E" }}>
       <View
         style={{
           flexDirection: "row",

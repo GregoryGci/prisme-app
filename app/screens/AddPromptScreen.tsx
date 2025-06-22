@@ -105,6 +105,12 @@ const AddPromptScreen = () => {
 export default AddPromptScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#1E1E1E",
+    flex: 0.7, 
+    padding: 20, 
+    justifyContent: 'center'
+  },
   scheduledList: {
     marginTop: 30,
   },
@@ -115,7 +121,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   promptItem: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#1E1E1E',
     padding: 10,
     marginBottom: 10,
     borderRadius: 8,
@@ -128,13 +134,12 @@ const styles = StyleSheet.create({
     color: 'red',
     fontWeight: 'bold',
     fontStyle: 'italic',
-    textAlign: 'right',
-  },
-
-  container: { flex: 0.7, padding: 20, justifyContent: 'center' },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
     marginBottom: 20,
     textAlign: 'center',
   },
