@@ -15,8 +15,6 @@ import {
 export default function CustomDrawerContent(props: any) {
   return (
     <View style={{ flex: 1 }}>
-      
-
       {/* Liste des liens */}
       <DrawerContentScrollView {...props} contentContainerStyle={styles.links}>
         <DrawerItemList {...props} />
@@ -27,7 +25,7 @@ export default function CustomDrawerContent(props: any) {
         style={styles.logoutButton}
         onPress={() => alert("Déconnexion")}
       >
-        <Text style={styles.logoutText}>Log Out</Text>
+        <Text style={styles.logoutText}>Se déconnecter</Text>
       </TouchableOpacity>
     </View>
   );
@@ -40,28 +38,22 @@ const styles = StyleSheet.create({
     backgroundColor: "#e7e7e7",
     paddingBottom: 20,
   },
-  avatar: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    marginBottom: 10,
-  },
   name: {
     fontSize: 18,
     fontWeight: "600",
     color: "#333",
   },
   links: {
-    paddingTop: 10,
+    paddingTop: 50,
   },
   logoutButton: {
     padding: 20,
-    borderTopWidth: 1,
     borderTopColor: "#ccc",
   },
   logoutText: {
     fontSize: 16,
-    color: "red",
+    color: "rgb(252, 71, 71)",
     fontWeight: "500",
+    marginLeft: 8,
   },
 });

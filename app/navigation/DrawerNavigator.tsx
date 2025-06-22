@@ -28,15 +28,17 @@ export default function DrawerNavigator() {
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
-        headerShown: false, // tu as choisi de gérer les headers manuellement
+        headerShown: false,
         drawerStyle: {
-          backgroundColor: "#fdfdfd",
-          width: 260,
+          backgroundColor: "#323232",
+          width: 250,
         },
         drawerLabelStyle: {
+          color: "#fff",
           fontSize: 16,
-          marginLeft: -8,
+          marginLeft: 8,
         },
+        drawerActiveTintColor: "#939393", // ← ✅ Couleur personnalisée de sélection
       }}
     >
       <Drawer.Screen name="Accueil" component={HomeScreen} />

@@ -31,11 +31,11 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   card: {
-    backgroundColor: "#fdfcfb",
+    backgroundColor: "#252525",
     borderRadius: 20,
     padding: 24,
     // Ombre moderne pour iOS
-    shadowColor: "#000",
+    shadowColor: "#fff",
     shadowOffset: {
       width: 0,
       height: 8,
@@ -46,14 +46,14 @@ const styles = StyleSheet.create({
     elevation: 20,
     // Bordure subtile pour plus de définition
     borderWidth: 1,
-    borderColor: "rgba(0, 0, 0, 0.06)",
+    borderColor: "rgba(255, 255, 255, 0.06)",
     // Effet de profondeur supplémentaire
     ...Platform.select({
       ios: {
-        shadowColor: "#000",
+        shadowColor: "#fff",
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.1,
-        shadowRadius: 4,
+        shadowRadius: 6,
       },
       android: {
         elevation: 4,
@@ -63,14 +63,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "700",
-    color: "#1a1a1a",
+    color: "#FFFFFF",
     marginBottom: 12,
     letterSpacing: -0.5,
   },
   source: {
     marginTop: 18,
     fontSize: 13,
-    color: "#666",
+    color: "#FFFFFF",
     fontStyle: "italic",
     fontWeight: "500",
   },
@@ -78,13 +78,13 @@ const styles = StyleSheet.create({
 
 const markdownStyles = StyleSheet.create({
   body: {
-    color: "#2d2d2d",
+    color: "#FFFFFF",
     fontSize: 16,
     lineHeight: 24,
   },
   strong: {
     fontWeight: "700",
-    color: "#1a1a1a",
+    color: "#FFFFFF",
   },
   bullet_list: {
     marginBottom: 10,
@@ -97,7 +97,7 @@ const markdownStyles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 8,
     marginTop: 16,
-    color: "#1a1a1a",
+    color: "#FFFFFF",
     letterSpacing: -0.3,
   },
   paragraph: {

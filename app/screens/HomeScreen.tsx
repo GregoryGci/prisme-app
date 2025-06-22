@@ -53,7 +53,7 @@ export default function HomeScreen() {
         <TouchableOpacity
           onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
         >
-          <List size={26} weight="bold" />
+          <List size={26} weight="bold" color="white" />
         </TouchableOpacity>
 
         <View style={styles.searchHeaderBar}>
@@ -61,6 +61,7 @@ export default function HomeScreen() {
             value={searchPrompt}
             onChangeText={setSearchPrompt}
             placeholder="Tape ton prompt ici..."
+            placeholderTextColor="#888"
             onSubmitEditing={handleSearchSubmit}
             returnKeyType="send"
             style={styles.searchInput}
@@ -68,7 +69,7 @@ export default function HomeScreen() {
         </View>
 
         <TouchableOpacity onPress={() => setShowScheduleModal(true)}>
-          <Plus size={26} weight="bold" />
+          <Plus size={26} weight="bold" color="white" />
         </TouchableOpacity>
       </View>
 
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "transparent",
+    backgroundColor: "#1E1E1E",
   },
   headerRow: {
     flexDirection: "row",
@@ -119,20 +120,22 @@ const styles = StyleSheet.create({
   searchHeaderBar: {
     flex: 1,
     marginHorizontal: 12,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#252525",
     borderRadius: 12,
     paddingHorizontal: 10,
     paddingVertical: Platform.OS === "ios" ? 6 : 4,
 
     // 🌫️ Ombre douce
-    shadowColor: "#000",
+    shadowColor: "#fff",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowRadius: 6,
     elevation: 3,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.06)",
   },
   searchInput: {
     fontSize: 16,
-    color: "#333",
+    color: "#ffffff",
   },
 });
