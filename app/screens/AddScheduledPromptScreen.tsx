@@ -13,8 +13,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import AppText from "../components/AppText";
 import { usePrompt } from "../context/PromptContext";
 
-export default function AddScheduledPromptScreen() {
-  const { addPrompt } = usePrompt();
+export default function AddScheduledPromptScreen({ onClose }: { onClose: () => void }) {  const { addPrompt } = usePrompt();
   const [prompt, setPrompt] = useState("");
   const [time, setTime] = useState(new Date(2025, 0, 1, 7, 0)); // 7h00 par défaut
   const [showPicker, setShowPicker] = useState(false);

@@ -9,8 +9,8 @@ import { PromptProvider } from './app/context/PromptContext';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    "Inter-Regular": require("./assets/fonts/SFUIText-Regular.ttf"),
-    "Inter-Bold": require("./assets/fonts/SFUIText-Bold.ttf"),
+    "Inter-Regular": require("./app/assets/fonts/SFUIText-Regular.ttf"),
+    "Inter-Bold": require("./app/assets/fonts/SFUIText-Bold.ttf"),
   });
 
   if (!fontsLoaded) {
