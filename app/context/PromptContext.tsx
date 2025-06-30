@@ -10,7 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const STORAGE_KEY = "prompts";
 
-// ✅ Définition du type d’un prompt
+// ✅ Définition du type d'un prompt
 export type Prompt = {
   id: string;
   question: string;
@@ -22,6 +22,7 @@ export type Prompt = {
     minute: number;
     frequency: "daily";
     lastRun?: string;
+    isRecurring?: boolean; // Nouvelle propriété pour compatibilité
   };
 };
 
@@ -40,7 +41,7 @@ type PromptContextType = {
 // ✅ Création du contexte
 const PromptContext = createContext<PromptContextType | undefined>(undefined);
 
-// ✅ Provider qui enveloppe l’app et donne accès au contexte
+// ✅ Provider qui enveloppe l'app et donne accès au contexte
 export function PromptProvider({ children }: { children: ReactNode }) {
   const [prompts, setPrompts] = useState<Prompt[]>([]);
 
@@ -49,7 +50,15 @@ export function PromptProvider({ children }: { children: ReactNode }) {
     const loadPrompts = async () => {
       const saved = await AsyncStorage.getItem(STORAGE_KEY);
       if (saved) {
-        setPrompts(JSON.parse(saved));
+        const loadedPrompts: Prompt[] = JSON.parse(saved);
+        setPrompts(loadedPrompts);
+        
+        // Reprogrammer tous les prompts planifiés au démarrage
+        loadedPrompts.forEach((prompt: Prompt) => {
+          if (prompt.scheduled && (prompt.scheduled.isRecurring ?? true)) {
+            schedulePromptExecution(prompt);
+          }
+        });
       }
     };
     loadPrompts();
@@ -60,7 +69,72 @@ export function PromptProvider({ children }: { children: ReactNode }) {
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(prompts));
   }, [prompts]);
 
-  // ✅ Ajout d’un prompt (manuel ou planifié)
+  // 🔄 Fonction pour programmer l'exécution d'un prompt récurrent
+  const schedulePromptExecution = (prompt: Prompt) => {
+    if (!prompt.scheduled) return;
+
+    const now = new Date();
+    const scheduledTime = new Date();
+    scheduledTime.setHours(prompt.scheduled.hour, prompt.scheduled.minute, 0, 0);
+
+    // Si l'heure est déjà passée aujourd'hui, programmer pour demain
+    if (scheduledTime <= now) {
+      scheduledTime.setDate(scheduledTime.getDate() + 1);
+    }
+
+    const timeUntilExecution = scheduledTime.getTime() - now.getTime();
+
+    setTimeout(() => {
+      executeScheduledPrompt(prompt);
+    }, timeUntilExecution);
+  };
+
+  // 🚀 Fonction pour exécuter un prompt planifié
+  const executeScheduledPrompt = async (prompt: Prompt) => {
+    if (!prompt.scheduled) return;
+
+    console.log(`Exécution du prompt planifié: ${prompt.question}`);
+
+    try {
+      // Générer la réponse
+      const response = await fetchAiResponse(prompt.question);
+      const now = new Date().toISOString();
+
+      // Mettre à jour le prompt avec la nouvelle réponse
+      setPrompts((prev: Prompt[]) =>
+        prev.map((p: Prompt) =>
+          p.id === prompt.id
+            ? {
+                ...p,
+                response,
+                updatedAt: now,
+                scheduled: {
+                  ...p.scheduled!,
+                  lastRun: now,
+                },
+              }
+            : p
+        )
+      );
+
+      // Si récurrent, programmer la prochaine exécution
+      if (prompt.scheduled.isRecurring ?? true) {
+        const nextExecution = new Date();
+        nextExecution.setDate(nextExecution.getDate() + 1);
+        nextExecution.setHours(prompt.scheduled.hour, prompt.scheduled.minute, 0, 0);
+
+        const timeUntilNext = nextExecution.getTime() - Date.now();
+
+        setTimeout(() => {
+          executeScheduledPrompt(prompt);
+        }, timeUntilNext);
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'exécution du prompt planifié:", error);
+    }
+  };
+
+  // ✅ Ajout d'un prompt (manuel ou planifié)
   const addPrompt = async (
     question: string,
     options?: Partial<Prompt["scheduled"]>
@@ -69,7 +143,7 @@ export function PromptProvider({ children }: { children: ReactNode }) {
     const isScheduled =
       !!options && options.hour !== undefined && options.minute !== undefined;
 
-    // 🧠 Si c’est planifié → on ne génère PAS de réponse tout de suite
+    // 🧠 Si c'est planifié → on ne génère PAS de réponse tout de suite
     const response = isScheduled ? "" : await fetchAiResponse(question);
 
     const newPrompt: Prompt = {
@@ -84,21 +158,27 @@ export function PromptProvider({ children }: { children: ReactNode }) {
             minute: options?.minute ?? 0,
             frequency: "daily",
             lastRun: undefined,
+            isRecurring: options?.isRecurring ?? true, // Par défaut récurrent
           }
         : undefined,
     };
 
-    setPrompts((prev) => [...prev, newPrompt]);
+    setPrompts((prev: Prompt[]) => [...prev, newPrompt]);
+
+    // Si c'est un prompt planifié et récurrent, le programmer
+    if (isScheduled && (options?.isRecurring ?? true)) {
+      schedulePromptExecution(newPrompt);
+    }
   };
 
   // ✅ Supprime un seul prompt par ID
   const removePrompt = (id: string) => {
-    setPrompts((prev) => prev.filter((p) => p.id !== id));
+    setPrompts((prev: Prompt[]) => prev.filter((p: Prompt) => p.id !== id));
   };
 
   // ✅ Supprime tous les prompts exécutés (on garde les planifiés)
   const clearPrompts = async () => {
-    const remaining = prompts.filter((p) => p.scheduled);
+    const remaining = prompts.filter((p: Prompt) => p.scheduled);
     setPrompts(remaining);
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(remaining));
   };
@@ -136,8 +216,8 @@ export function PromptProvider({ children }: { children: ReactNode }) {
     }
 
     if (updated.length > 0) {
-      setPrompts((prev) =>
-        prev.map((p) => updated.find((u) => u.id === p.id) || p)
+      setPrompts((prev: Prompt[]) =>
+        prev.map((p: Prompt) => updated.find((u: Prompt) => u.id === p.id) || p)
       );
     }
   };

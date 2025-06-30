@@ -134,12 +134,10 @@ const styles = StyleSheet.create({
     color: 'red',
     fontWeight: 'bold',
     fontStyle: 'italic',
+  },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
     marginBottom: 20,
     textAlign: 'center',
   },

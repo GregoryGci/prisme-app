@@ -8,8 +8,8 @@ import {
   Alert,
   Modal,
   TextInput,
-  ImageBackground,
   Platform,
+  RefreshControl,
 } from "react-native";
 import GlassCard from "../components/GlassCard";
 import AppText from "../components/AppText";
@@ -28,7 +28,11 @@ export default function HomeScreen() {
   const [searchPrompt, setSearchPrompt] = useState("");
 
   useEffect(() => {
-    checkAndRunScheduledPrompts();
+    const interval = setInterval(() => {
+      checkAndRunScheduledPrompts();
+    }, 60000); // Vérifier toutes les minutes
+
+    return () => clearInterval(interval);
   }, []);
 
   const handleRefresh = async () => {
@@ -84,8 +88,14 @@ export default function HomeScreen() {
             source={item.source}
           />
         )}
-        refreshing={refreshing}
-        onRefresh={handleRefresh}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={handleRefresh}
+            colors={["#fff"]}
+            tintColor="#fff"
+          />
+        }
       />
 
       {/* ➕ Modal planification */}
@@ -95,7 +105,7 @@ export default function HomeScreen() {
         presentationStyle="pageSheet"
         onRequestClose={() => setShowScheduleModal(false)}
       >
-        <AddScheduledPromptScreen onClose={() => setShowScheduleModal(false)} />
+        <AddScheduledPromptScreen/>
       </Modal>
     </SafeAreaView>
   );

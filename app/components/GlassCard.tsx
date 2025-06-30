@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "#252525",
-    borderRadius: 20,
+    borderRadius: 8,
     padding: 24,
     // Ombre moderne pour iOS
     shadowColor: "#fff",

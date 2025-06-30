@@ -17,7 +17,7 @@ export default function App() {
   if (!fontsLoaded) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large"/>
       </View>
     );
   }
@@ -32,5 +32,5 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  loader: { flex: 1, justifyContent: "center", alignItems: "center" },
+  loader: { flex: 1, justifyContent: "center", alignItems: "center"},
 });
