@@ -11,17 +11,11 @@ import CustomDrawerContent from "../components/CustomDrawerContent";
 
 const Drawer = createDrawerNavigator();
 
-// ✅ Composant bouton menu ≡ (affiché sur tous les headers)
-function MenuButton() {
-  const navigation = useNavigation();
-  return (
-    <TouchableOpacity
-      onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-    >
-      <List size={26} weight="bold" />
-    </TouchableOpacity>
-  );
-}
+/**
+ * Composant principal du Drawer Navigator
+ * Contient les écrans principaux de l'application
+ * Utilise un composant personnalisé pour le contenu du drawer
+ */
 
 export default function DrawerNavigator() {
   return (

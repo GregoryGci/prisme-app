@@ -5,7 +5,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { fetchAiResponse } from "../utils/fetchAiResponse";
+import { fetchAiResponseWithSources } from "../utils/fetchAiResponse"; // ✅ Import de la nouvelle fonction
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const STORAGE_KEY = "prompts";
@@ -22,7 +22,7 @@ export type Prompt = {
     minute: number;
     frequency: "daily";
     lastRun?: string;
-    isRecurring?: boolean; // Nouvelle propriété pour compatibilité
+    isRecurring?: boolean;
   };
 };
 
@@ -52,7 +52,7 @@ export function PromptProvider({ children }: { children: ReactNode }) {
       if (saved) {
         const loadedPrompts: Prompt[] = JSON.parse(saved);
         setPrompts(loadedPrompts);
-        
+
         // Reprogrammer tous les prompts planifiés au démarrage
         loadedPrompts.forEach((prompt: Prompt) => {
           if (prompt.scheduled && (prompt.scheduled.isRecurring ?? true)) {
@@ -75,7 +75,12 @@ export function PromptProvider({ children }: { children: ReactNode }) {
 
     const now = new Date();
     const scheduledTime = new Date();
-    scheduledTime.setHours(prompt.scheduled.hour, prompt.scheduled.minute, 0, 0);
+    scheduledTime.setHours(
+      prompt.scheduled.hour,
+      prompt.scheduled.minute,
+      0,
+      0
+    );
 
     // Si l'heure est déjà passée aujourd'hui, programmer pour demain
     if (scheduledTime <= now) {
@@ -96,8 +101,8 @@ export function PromptProvider({ children }: { children: ReactNode }) {
     console.log(`Exécution du prompt planifié: ${prompt.question}`);
 
     try {
-      // Générer la réponse
-      const response = await fetchAiResponse(prompt.question);
+      // ✅ Utilisation de la nouvelle fonction avec sources
+      const result = await fetchAiResponseWithSources(prompt.question);
       const now = new Date().toISOString();
 
       // Mettre à jour le prompt avec la nouvelle réponse
@@ -106,7 +111,8 @@ export function PromptProvider({ children }: { children: ReactNode }) {
           p.id === prompt.id
             ? {
                 ...p,
-                response,
+                response: result.response, // ✅ Utilisation de result.response
+                source: result.sourcesFormatted, // ✅ URLs complètes pour les liens
                 updatedAt: now,
                 scheduled: {
                   ...p.scheduled!,
@@ -121,7 +127,12 @@ export function PromptProvider({ children }: { children: ReactNode }) {
       if (prompt.scheduled.isRecurring ?? true) {
         const nextExecution = new Date();
         nextExecution.setDate(nextExecution.getDate() + 1);
-        nextExecution.setHours(prompt.scheduled.hour, prompt.scheduled.minute, 0, 0);
+        nextExecution.setHours(
+          prompt.scheduled.hour,
+          prompt.scheduled.minute,
+          0,
+          0
+        );
 
         const timeUntilNext = nextExecution.getTime() - Date.now();
 
@@ -144,13 +155,21 @@ export function PromptProvider({ children }: { children: ReactNode }) {
       !!options && options.hour !== undefined && options.minute !== undefined;
 
     // 🧠 Si c'est planifié → on ne génère PAS de réponse tout de suite
-    const response = isScheduled ? "" : await fetchAiResponse(question);
+    // ✅ Utilisation correcte de la nouvelle fonction avec sources
+    const result = isScheduled
+      ? {
+          response: "",
+          sources: [],
+          sourcesFormatted: "Planifié",
+          sourcesDisplay: "Planifié",
+        }
+      : await fetchAiResponseWithSources(question);
 
     const newPrompt: Prompt = {
       id: Date.now().toString(),
       question,
-      response,
-      source: isScheduled ? "Planifié" : "GPT-3.5",
+      response: result.response,
+      source: result.sourcesFormatted, // ✅ URLs complètes pour les liens cliquables
       updatedAt: now,
       scheduled: isScheduled
         ? {
@@ -158,7 +177,7 @@ export function PromptProvider({ children }: { children: ReactNode }) {
             minute: options?.minute ?? 0,
             frequency: "daily",
             lastRun: undefined,
-            isRecurring: options?.isRecurring ?? true, // Par défaut récurrent
+            isRecurring: options?.isRecurring ?? true,
           }
         : undefined,
     };
@@ -202,11 +221,13 @@ export function PromptProvider({ children }: { children: ReactNode }) {
 
       if (lastRun?.startsWith(today)) continue;
 
-      const newResponse = await fetchAiResponse(prompt.question);
+      // ✅ Utilisation de la nouvelle fonction avec sources
+      const result = await fetchAiResponseWithSources(prompt.question);
 
       updated.push({
         ...prompt,
-        response: newResponse,
+        response: result.response, // ✅ Correct
+        source: result.sourcesFormatted, // ✅ URLs complètes pour les liens
         updatedAt: now.toISOString(),
         scheduled: {
           ...prompt.scheduled,

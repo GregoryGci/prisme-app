@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, } from "react-native";
 import {
   DrawerContentScrollView,
   DrawerItemList,
@@ -32,24 +25,16 @@ export default function CustomDrawerContent(props: any) {
 }
 
 const styles = StyleSheet.create({
-  header: {
-    paddingTop: 50,
-    alignItems: "center",
-    backgroundColor: "#e7e7e7",
-    paddingBottom: 20,
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#333",
-  },
+  // Style pour la liste des liens
   links: {
     paddingTop: 50,
   },
+  // Style pour le bouton de déconnexion
   logoutButton: {
     padding: 20,
     borderTopColor: "#ccc",
   },
+  // Style pour le texte de déconnexion
   logoutText: {
     fontSize: 16,
     color: "rgb(252, 71, 71)",
