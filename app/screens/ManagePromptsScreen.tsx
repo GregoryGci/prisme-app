@@ -677,24 +677,26 @@ const styles = StyleSheet.create({
   },
 
   filtersContainer: {
+    maxHeight: 50,
     paddingHorizontal: 16,
-    marginBottom: 16,
+    marginBottom: 12,
   },
 
-  // ✅ AJOUT : Style pour le contenu du ScrollView horizontal
   filtersContent: {
-    alignItems: "center", // Centre verticalement les éléments
-    paddingRight: 16, // Espace à droite du dernier élément
+    alignItems: "center",
+    paddingRight: 16,
+    minHeight: 40,
   },
 
   filterButton: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#252525",
-    paddingHorizontal: 12,
-    paddingVertical: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
     borderRadius: 20,
     marginRight: 8,
+    height: 32,
   },
 
   filterButtonActive: {
@@ -702,7 +704,7 @@ const styles = StyleSheet.create({
   },
 
   filterText: {
-    fontSize: 14,
+    fontSize: 13,
     color: "#888",
     marginLeft: 4,
   },
@@ -714,9 +716,10 @@ const styles = StyleSheet.create({
 
   filterSeparator: {
     width: 1,
-    height: 30,
+    height: 24,
     backgroundColor: "#444",
     marginHorizontal: 8,
+    alignSelf: "center",
   },
 
   controlsContainer: {
@@ -724,7 +727,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
-    marginBottom: 16,
+    marginBottom: 12,
+    minHeight: 32,
   },
 
   resultCount: {
@@ -775,7 +779,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 12,
     fontWeight: "600",
-    marginLeft: 4, // ✅ Ajout d'espace après l'icône
+    marginLeft: 4,
   },
 
   statusContainer: {
@@ -939,7 +943,7 @@ const styles = StyleSheet.create({
   categorySelectorText: {
     fontSize: 14,
     color: "#fff",
-    marginLeft: 4, // ✅ Espace après l'icône
+    marginLeft: 4,
   },
 
   timePickerContainer: {
