@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import {
   View,
   Text,
@@ -48,7 +48,8 @@ const CATEGORIES = [
 export default function AddScheduledPromptScreen() {
   // Hooks pour la navigation et le contexte des prompts
   const navigation = useNavigation();
-  const { addPrompt } = usePrompt();
+  const { addPrompt, notificationsEnabled, requestNotificationPermissions } =
+    usePrompt(); // ✅ NOUVEAU
 
   // États locaux du composant - identiques + catégorie
   const [prompt, setPrompt] = useState(""); // Texte du prompt saisi par l'utilisateur
@@ -56,6 +57,34 @@ export default function AddScheduledPromptScreen() {
   const [isRecurring, setIsRecurring] = useState(true); // Mode récurrent activé par défaut
   const [selectedCategory, setSelectedCategory] = useState("other"); // ✅ NOUVEAU : Catégorie sélectionnée
 
+  /**
+   * ✅ NOUVEAU : Vérifier les permissions au montage du composant
+   */
+  useEffect(() => {
+    const checkNotifications = async () => {
+      if (!notificationsEnabled) {
+        const granted = await requestNotificationPermissions();
+        if (!granted) {
+          Alert.alert(
+            "Notifications désactivées",
+            "Pour recevoir des rappels de vos prompts planifiés, activez les notifications dans les paramètres.",
+            [
+              { text: "Plus tard", style: "cancel" },
+              {
+                text: "Paramètres",
+                onPress: () => {
+                  // Optionnel : ouvrir les paramètres système
+                  console.log("Redirection vers paramètres système");
+                },
+              },
+            ]
+          );
+        }
+      }
+    };
+
+    checkNotifications();
+  }, [notificationsEnabled, requestNotificationPermissions]);
   /**
    * 🕐 Formatage optimisé de l'heure (invisible pour l'utilisateur)
    */
@@ -118,7 +147,7 @@ export default function AddScheduledPromptScreen() {
   }, []);
 
   /**
-   * 📅 Fonction de planification du prompt avec support des catégories
+   * 📅 Fonction de planification du prompt avec validation temporelle
    * Valide les données et enregistre le prompt via le contexte
    */
   const handleSchedule = useCallback(async () => {
@@ -128,13 +157,28 @@ export default function AddScheduledPromptScreen() {
       return;
     }
 
+    // ✅ NOUVEAU : Validation temporelle pour les prompts non récurrents
+    if (!isRecurring) {
+      const scheduledTime = new Date();
+      scheduledTime.setHours(time.getHours(), time.getMinutes(), 0, 0);
+      const now = new Date();
+
+      if (scheduledTime <= now) {
+        Alert.alert(
+          "Erreur de planification",
+          "L'heure sélectionnée est dans le passé. Choisissez une heure future ou activez la récurrence quotidienne."
+        );
+        return;
+      }
+    }
+
     try {
       // ✅ Enregistrement du prompt avec catégorie
       await addPrompt(prompt, {
         hour: time.getHours(),
         minute: time.getMinutes(),
         isRecurring: isRecurring,
-        category: selectedCategory, // ✅ NOUVEAU : Support catégorie
+        category: selectedCategory,
       });
 
       // Message de confirmation adapté au type de planification
@@ -144,12 +188,12 @@ export default function AddScheduledPromptScreen() {
       const categoryName = categoryInfo ? categoryInfo.name : "Autre";
 
       const message = isRecurring
-        ? `Prompt "${categoryName}" planifié pour tous les jours à ${formattedTime} !`
-        : `Prompt "${categoryName}" planifié pour une seule fois à ${formattedTime} !`;
+        ? `Prompt "${categoryName}" planifié pour tous les jours à ${formattedTime} ! 🔔`
+        : `Prompt "${categoryName}" planifié pour une seule fois à ${formattedTime} ! ⏰`;
 
       Alert.alert("✅", message);
       setPrompt(""); // Réinitialiser le champ de saisie
-      setSelectedCategory("other"); // ✅ Réinitialiser la catégorie
+      setSelectedCategory("other"); // Réinitialiser la catégorie
 
       // Optionnel : rediriger vers l'accueil après planification
       // navigation.navigate("Accueil");

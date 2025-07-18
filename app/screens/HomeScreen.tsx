@@ -62,7 +62,7 @@ export default function HomeScreen() {
   useEffect(() => {
     // Vérification immédiate au montage
     checkScheduledPrompts();
-    
+
     // Puis toutes les minutes
     const interval = setInterval(checkScheduledPrompts, 60000);
     return () => clearInterval(interval);
@@ -103,22 +103,40 @@ export default function HomeScreen() {
    */
   const feedPrompts = useMemo(() => {
     return prompts
-      .filter((p) => p.response) // Seulement les prompts avec réponse
+      .filter((p) => {
+        // ✅ NOUVEAU : Filtrage plus strict pour exclure les états de chargement
+        return (
+          p.response &&
+          p.response !== "" &&
+          p.response !== "⏳ Génération en cours..." &&
+          p.response !== "⏳ Exécution en cours..." &&
+          !p.response.startsWith("⏳")
+        ); // Sécurité pour tous les états de chargement
+      })
       .slice() // Copie pour éviter la mutation
-      .reverse(); // Plus récents en premier
+      .sort((a, b) => {
+        // ✅ NOUVEAU : Tri explicite par date décroissante (plus récents en haut)
+        const dateA = new Date(a.updatedAt).getTime();
+        const dateB = new Date(b.updatedAt).getTime();
+        return dateB - dateA; // Ordre décroissant : plus récent → plus ancien
+      });
   }, [prompts]);
 
   /**
    * 🎭 Fonction de rendu optimisée pour FlatList avec typage correct
    * useCallback évite les re-renders des items
    */
-  const renderPromptItem = useCallback(({ item }: { item: Prompt }) => (
-    <GlassCard
-      title={item.question}
-      content={item.response}
-      source={item.source}
-    />
-  ), []);
+  const renderPromptItem = useCallback(
+    ({ item, index }: { item: Prompt; index: number }) => (
+      <GlassCard
+        title={item.question}
+        content={item.response}
+        source={item.source}
+        index={index} // ✅ NOUVEAU : Passer l'index pour l'animation staggered
+      />
+    ),
+    []
+  );
 
   /**
    * 🔑 Optimisation critique : keyExtractor mémoïsé avec typage
@@ -130,14 +148,17 @@ export default function HomeScreen() {
    * 📱 Composant RefreshControl mémoïsé
    * Évite les re-créations à chaque render
    */
-  const refreshControl = useMemo(() => (
-    <RefreshControl
-      refreshing={refreshing}
-      onRefresh={handleRefresh}
-      colors={["#fff"]}
-      tintColor="#fff"
-    />
-  ), [refreshing, handleRefresh]);
+  const refreshControl = useMemo(
+    () => (
+      <RefreshControl
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
+        colors={["#fff"]}
+        tintColor="#fff"
+      />
+    ),
+    [refreshing, handleRefresh]
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -148,8 +169,8 @@ export default function HomeScreen() {
           <TouchableOpacity
             accessibilityLabel="Ouvrir le menu de navigation"
             accessibilityRole="button"
-            onPress={useCallback(() => 
-              navigation.dispatch(DrawerActions.openDrawer()), 
+            onPress={useCallback(
+              () => navigation.dispatch(DrawerActions.openDrawer()),
               [navigation]
             )}
           >
@@ -193,22 +214,21 @@ export default function HomeScreen() {
         keyExtractor={keyExtractor}
         renderItem={renderPromptItem}
         refreshControl={refreshControl}
-        
         // 🚀 Optimisations de performance critiques
         removeClippedSubviews={true} // Économise la mémoire
         maxToRenderPerBatch={5} // Limite le rendu par batch
         windowSize={10} // Optimise la fenêtre de rendu
         initialNumToRender={3} // Rendu initial limité
         updateCellsBatchingPeriod={50} // Groupage des mises à jour
-        
         // 🎨 Améliorations visuelles
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={feedPrompts.length === 0 ? styles.emptyContainer : undefined}
-        
+        contentContainerStyle={
+          feedPrompts.length === 0 ? styles.emptyContainer : undefined
+        }
         // 📱 Amélioration de l'expérience utilisateur
         keyboardShouldPersistTaps="handled" // Permet l'interaction même avec clavier ouvert
         onScrollBeginDrag={Keyboard.dismiss} // Ferme le clavier au scroll
-        
+
         // 🔄 Performance : getItemLayout pour éléments de taille fixe
         // Décommentez si vos cards ont une taille fixe connue
         // getItemLayout={(data, index) => (
@@ -262,7 +282,7 @@ const styles = StyleSheet.create({
 
     // ✅ SUPPRESSION des ombres pour correspondre aux GlassCards
     // Plus d'effets d'élévation pour cohérence totale
-    
+
     // ✅ BORDURES identiques aux GlassCards
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.06)",
@@ -280,7 +300,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  
+
   // ✅ Texte vide harmonisé
   emptyText: {
     fontSize: 16,
@@ -299,20 +319,20 @@ const styles = StyleSheet.create({
 
 /**
  * 📚 HARMONISATION COMPLÈTE DE LA SEARCHBAR
- * 
+ *
  * 🎨 COHÉRENCE VISUELLE TOTALE :
  * ✅ Suppression de toutes les ombres (shadowColor, shadowOffset, shadowOpacity, shadowRadius, elevation)
  * ✅ Ajout des bordures identiques aux GlassCards : borderWidth: 1 + borderColor: "rgba(255, 255, 255, 0.06)"
  * ✅ Même backgroundColor: "#252525" (conservé)
  * ✅ Même borderRadius: 12 (conservé)
  * ✅ Même padding horizontal/vertical (conservé)
- * 
+ *
  * 🔧 RÉSULTAT :
  * - La searchbar a maintenant exactement le même rendu que les GlassCards
  * - Rendu plat sans ombres
  * - Bordure subtile blanche identique
  * - Cohérence visuelle parfaite dans toute l'application
- * 
+ *
  * 📊 IMPACT :
  * - Design system unifié
  * - Expérience utilisateur cohérente
