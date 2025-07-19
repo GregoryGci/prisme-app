@@ -261,7 +261,7 @@ export default function ProfileScreen() {
           accessibilityLabel="Ouvrir le menu de navigation"
           accessibilityRole="button"
         >
-          <List size={26} color="#fff" />
+          <List size={26}  weight="regular" color="white" />
         </TouchableOpacity>
         <AppText style={styles.headerTitle} bold>
           Mon Profil
@@ -291,7 +291,7 @@ export default function ProfileScreen() {
               { backgroundColor: userLevel.color + "20" },
             ]}
           >
-            <Text style={styles.levelIcon}>{userLevel.icon}</Text>
+            <AppText style={styles.levelIcon}>{userLevel.icon}</AppText>
             <AppText
               style={[styles.levelText, { color: userLevel.color }]}
               bold
@@ -417,7 +417,7 @@ export default function ProfileScreen() {
                   badge.earned ? styles.badgeEarned : styles.badgeLocked,
                 ]}
               >
-                <Text style={styles.badgeIcon}>{badge.icon}</Text>
+                <AppText style={styles.badgeIcon}>{badge.icon}</AppText>
                 <AppText
                   style={[
                     styles.badgeName,

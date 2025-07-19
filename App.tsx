@@ -10,20 +10,19 @@ import DrawerNavigator from "./app/navigation/DrawerNavigator";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    "Inter-Regular": require("./app/assets/fonts/SFUIText-Regular.ttf"),
-    "Inter-Bold": require("./app/assets/fonts/SFUIText-Bold.ttf"),
+    "FiraCode-VariableFont": require("./app/assets/fonts/FiraCode-VariableFont.ttf"),
   });
 
   if (!fontsLoaded) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large"/>
+        <ActivityIndicator size="large" />
       </View>
     );
   }
 
   return (
-     <PromptProvider>
+    <PromptProvider>
       <NavigationContainer>
         <DrawerNavigator />
       </NavigationContainer>
@@ -32,5 +31,5 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  loader: { flex: 1, justifyContent: "center", alignItems: "center"},
+  loader: { flex: 1, justifyContent: "center", alignItems: "center" },
 });

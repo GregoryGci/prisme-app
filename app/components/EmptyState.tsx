@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Clock, Lightbulb, ChatCircle, Lightning } from "phosphor-react-native";
 import AppText from "./AppText";
+import { useHaptic } from "../hooks/useHaptic"; // ✅ NOUVEAU : Import du hook haptic
 
 const { width, height } = Dimensions.get("window");
 
@@ -20,28 +21,29 @@ type EmptyStateProps = {
 };
 
 /**
- * ✨ EmptyState moderne - Tendances UX/UI 2025
+ * ✨ EmptyState avec Haptic Feedback Premium
+ *
+ * 🆕 NOUVEAUTÉS HAPTIC :
+ * - Feedback tactile sur toutes les interactions
+ * - Micro-vibrations sur hover/focus
+ * - Vibration satisfaisante sur action principale
+ * - Respect des préférences accessibilité
+ * - Sensation premium niveau App Store
  *
  * 🎯 Design Philosophy :
- * - Minimalisme intentionnel avec focus sur l'action
- * - Animations subtiles et respectueuses (reduced motion friendly)
- * - Hiérarchie visuelle claire avec typographie moderne
- * - Copy humain et engageant sans être "salesy"
- * - Progressive disclosure : une action principale, une secondaire
- * - Cohérence totale avec le design system existant
- *
- * 🔧 Tendances 2025 Appliquées :
- * - Geometric icons over illustrations
- * - Generous white space (dark space)
- * - Intentional color usage
- * - Accessibility-first approach
- * - Micro-interactions qui ajoutent de la valeur
- * - Content-first approach
+ * - Minimalisme intentionnel avec feedback tactile immersif
+ * - Animations subtiles coordonnées avec haptic
+ * - Hiérarchie tactile : micro → soft → medium selon l'importance
+ * - Progressive feedback disclosure
+ * - Cohérence totale avec le design system + sensation premium
  */
 export default function EmptyState({ onSchedulePrompt }: EmptyStateProps) {
+  // ✅ NOUVEAU : Hook haptic pour feedback tactile premium
+  const { hapticMicro, hapticSoft, hapticMedium } = useHaptic();
+
   // 🎭 Animations d'entrée subtiles et professionnelles
   const [fadeAnim] = useState(new Animated.Value(0));
-  const [slideUpAnim] = useState(new Animated.Value(30)); 
+  const [slideUpAnim] = useState(new Animated.Value(30)); // Plus subtil que 50px
 
   // 🌟 Animation continue très subtile pour l'icône principale
   const [iconFloat] = useState(new Animated.Value(0));
@@ -54,6 +56,12 @@ export default function EmptyState({ onSchedulePrompt }: EmptyStateProps) {
    * Respecte les préférences "reduced motion"
    */
   useEffect(() => {
+    // ✅ NOUVEAU : Haptic feedback subtil au montage de l'EmptyState
+    // Indique à l'utilisateur qu'il y a du contenu interactif
+    setTimeout(() => {
+      hapticMicro(); // Micro-vibration d'accueil très subtile
+    }, 600); // Après l'animation d'entrée
+
     // Animation d'entrée coordonnée et douce
     Animated.parallel([
       Animated.timing(fadeAnim, {
@@ -70,7 +78,7 @@ export default function EmptyState({ onSchedulePrompt }: EmptyStateProps) {
         useNativeDriver: true,
       }),
     ]).start();
-  }, []);
+  }, [hapticMicro]);
 
   /**
    * 🌊 Animation de flottement très subtile pour l'icône
@@ -99,18 +107,24 @@ export default function EmptyState({ onSchedulePrompt }: EmptyStateProps) {
   }, []);
 
   /**
-   * 🎯 Micro-interactions pour le bouton
+   * 🎯 Micro-interactions avec haptic feedback premium
+   * Coordination parfaite entre animation visuelle et feedback tactile
    */
   const handleButtonPressIn = useCallback(() => {
+    // ✅ NOUVEAU : Feedback tactile immédiat sur press
+    hapticSoft(); // Vibration confirmation du touch
+
+    // Animation visuelle de compression
     Animated.spring(buttonScale, {
       toValue: 0.98,
       useNativeDriver: true,
       tension: 300,
       friction: 8,
     }).start();
-  }, []);
+  }, [hapticSoft]);
 
   const handleButtonPressOut = useCallback(() => {
+    // Animation de retour à la normale
     Animated.spring(buttonScale, {
       toValue: 1,
       useNativeDriver: true,
@@ -118,6 +132,25 @@ export default function EmptyState({ onSchedulePrompt }: EmptyStateProps) {
       friction: 8,
     }).start();
   }, []);
+
+  /**
+   * ✅ NOUVEAU : Gestion de l'action principale avec haptic premium
+   */
+  const handleSchedulePress = useCallback(() => {
+    // ✅ Feedback tactile d'action importante
+    hapticMedium(); // Vibration confirmation d'action importante
+    
+    // Exécution de l'action
+    onSchedulePrompt();
+  }, [hapticMedium, onSchedulePrompt]);
+
+  /**
+   * ✅ NOUVEAU : Micro-interactions haptic sur les exemples
+   * Feedback subtil quand l'utilisateur explore les exemples
+   */
+  const handleExampleTouch = useCallback(() => {
+    hapticMicro(); // Vibration très subtile pour exploration
+  }, [hapticMicro]);
 
   return (
     <View style={styles.container}>
@@ -159,34 +192,42 @@ export default function EmptyState({ onSchedulePrompt }: EmptyStateProps) {
           </AppText>
         </View>
 
-        {/* 💡 Section exemples - Design 2025 */}
+        {/* 💡 Section exemples avec haptic feedback - Design 2025 */}
         <View style={styles.examplesSection}>
-          <View style={styles.exampleItem}>
+          <TouchableOpacity 
+            style={styles.exampleItem}
+            onPress={handleExampleTouch}
+            activeOpacity={0.7}
+          >
             <View style={styles.exampleIcon}>
               <ChatCircle size={16} color="#81b0ff" weight="fill" />
             </View>
             <AppText style={styles.exampleText}>
               "Actualités IA et machine learning du jour"
             </AppText>
-          </View>
+          </TouchableOpacity>
 
-          <View style={styles.exampleItem}>
+          <TouchableOpacity 
+            style={styles.exampleItem}
+            onPress={handleExampleTouch}
+            activeOpacity={0.7}
+          >
             <View style={styles.exampleIcon}>
               <Lightning size={16} color="#81b0ff" weight="fill" />
             </View>
             <AppText style={styles.exampleText}>
               "Nouveaux projets cryptomonnaie du jour"
             </AppText>
-          </View>
+          </TouchableOpacity>
         </View>
 
-        {/* 🎬 Section action unique */}
+        {/* 🎬 Section action unique avec haptic premium */}
         <View style={styles.actionsSection}>
           <TouchableOpacity
             style={styles.actionButton}
             onPressIn={handleButtonPressIn}
             onPressOut={handleButtonPressOut}
-            onPress={onSchedulePrompt}
+            onPress={handleSchedulePress} // ✅ NOUVEAU : Action avec haptic
             activeOpacity={1}
             accessibilityLabel="Configurer des prompts automatiques"
             accessibilityRole="button"
@@ -210,14 +251,13 @@ export default function EmptyState({ onSchedulePrompt }: EmptyStateProps) {
 }
 
 /**
- * 🎨 Styles modernes - Tendances 2025
- *
- * Principes appliqués :
- * - Spacing system cohérent (multiples de 8)
- * - Hiérarchie typographique claire
- * - Couleurs intentionnelles et mesurées
- * - Responsive design avec contraintes max
- * - Accessibility-friendly (tailles de touch, contrastes)
+ * 🎨 Styles modernes - Haptic-aware design
+ * 
+ * ✅ NOUVEAUTÉS POUR HAPTIC :
+ * - Zones touch optimisées pour feedback tactile
+ * - Padding généreux pour meilleure détection touch
+ * - Active states visuels coordonnés avec vibrations
+ * - Accessibility-friendly touch targets (44px+)
  */
 const styles = StyleSheet.create({
   container: {
@@ -291,7 +331,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.1,
   },
 
-  // 💡 SECTION EXEMPLES - Design 2025
+  // 💡 SECTION EXEMPLES - Haptic-aware design
   examplesSection: {
     width: "100%",
     marginBottom: 40,
@@ -303,11 +343,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#252525", // Cohérent avec Cards
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingVertical: 18, // ✅ AUGMENTÉ : Meilleur touch target pour haptic
     borderRadius: 12,
     marginBottom: 12,
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.06)",
+    
+    // ✅ NOUVEAU : Touch target accessibility optimisé
+    minHeight: 56, // Minimum 44px recommandé + margin
   },
 
   exampleIcon: {
@@ -333,10 +376,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  // Bouton action unique - Style bleu et blanc
+  // Bouton action unique - Style bleu et blanc haptic-optimized
   actionButton: {
     width: "100%",
     borderRadius: 12,
+    // ✅ NOUVEAU : Touch target optimisé pour haptic feedback
+    minHeight: 56, // Accessibility + haptic optimal
   },
 
   actionButtonContent: {
@@ -369,29 +414,40 @@ const styles = StyleSheet.create({
 });
 
 /**
- * 📚 EMPTYSTATE OPTIMISÉ POUR OUTIL DE VEILLE IA
+ * 📚 HAPTIC FEEDBACK INTÉGRÉ - GUIDE D'UTILISATION
  *
- * ✅ DESIGN FOCALISÉ :
- * - Icône ampoule symbolisant l'intelligence et la veille
- * - Titre spécialisé : "Votre outil de veille IA personnalisée"
- * - Guidance claire vers la searchbar existante
- * - Action unique : Configuration de prompts automatiques
+ * ✅ FEEDBACK TACTILE IMPLÉMENTÉ :
  *
- * ✅ UX STREAMLINÉE :
- * - Suppression du bouton redondant (searchbar déjà présente)
- * - Focus sur la valeur unique : automatisation via prompts planifiés
- * - Style bouton cohérent : bleu et blanc comme bouton principal
- * - Message clair guidant vers la searchbar
+ * 🎯 MICRO-INTERACTIONS :
+ * - Micro-vibration d'accueil au montage (600ms après animation)
+ * - Haptic subtil sur exploration des exemples
+ * - Feedback immédiat sur touch des zones interactives
  *
- * ✅ COHÉRENCE DESIGN :
- * - Ampoule = métaphore universelle pour idées/intelligence
- * - Couleurs harmonisées avec le design system
- * - Animations subtiles et professionnelles
- * - Typography moderne et accessible
+ * 🔵 BOUTON PRINCIPAL :
+ * - hapticSoft() sur pressIn (feedback immédiat)
+ * - hapticMedium() sur press (confirmation d'action importante)
+ * - Coordination parfaite avec animations visuelles
  *
- * 🎯 IMPACT UX :
- * - Évite la confusion entre searchbar et bouton question
- * - Met en avant la feature différenciante (prompts auto)
- * - Positioning clair comme outil de veille spécialisé
- * - Expérience fluide sans redondance
+ * 🎨 ZONES TACTILES OPTIMISÉES :
+ * - Touch targets 56px+ pour meilleur haptic
+ * - Padding généreux pour détection optimale
+ * - Active states coordonnés avec vibrations
+ *
+ * 📱 PATTERNS HAPTIC APPLIQUÉS :
+ * - Accueil subtil : Micro-vibration d'indication de contenu
+ * - Exploration : Haptic leger sur exemples interactifs
+ * - Action : Vibration progressive (soft → medium)
+ * - Respect des préférences accessibilité
+ *
+ * 🎯 RÉSULTAT :
+ * - Sensation premium comparable aux meilleures apps natives
+ * - Feedback tactile informatif et satisfaisant
+ * - Expérience immersive sans être intrusive
+ * - Perfect blend visual + tactile
+ *
+ * 🚀 PROCHAINES ÉTAPES :
+ * - Intégrer dans Cards.tsx (scroll, tap, long-press)
+ * - Ajouter aux boutons de navigation (drawer, etc.)
+ * - Implémenter dans les interactions de liste
+ * - Configurer les patterns pull-to-refresh
  */

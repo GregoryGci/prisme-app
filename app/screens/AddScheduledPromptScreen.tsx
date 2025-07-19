@@ -225,7 +225,7 @@ export default function AddScheduledPromptScreen() {
         >
           <List size={26} color="#fff" />
         </TouchableOpacity>
-        <Text style={{ fontSize: 18, marginLeft: 16 }}></Text>
+        <AppText style={{ fontSize: 18, marginLeft: 16 }}></AppText>
       </View>
 
       {/* Contenu principal avec scroll et fermeture du clavier */}
@@ -333,7 +333,7 @@ export default function AddScheduledPromptScreen() {
             style={styles.buttonSchedule}
             onPress={handleSchedule}
           >
-            <Text style={styles.buttonText}>Planifier le Prompt</Text>
+            <AppText style={styles.buttonText}>Planifier le Prompt</AppText>
           </TouchableOpacity>
         </ScrollView>
       </TouchableWithoutFeedback>
@@ -375,6 +375,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.06)",
+    fontFamily: "FiraCode-VariableFont",
   },
 
   // ✅ NOUVEAU : Section de sélection de catégorie

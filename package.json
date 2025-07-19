@@ -21,9 +21,13 @@
     "dotenv": "^17.0.1",
     "expo": "~53.0.11",
     "expo-blur": "~14.1.5",
+    "expo-constants": "~17.1.7",
     "expo-crypto": "~14.1.5",
+    "expo-device": "~7.1.4",
     "expo-font": "~13.3.1",
+    "expo-haptics": "^14.1.4",
     "expo-linear-gradient": "~14.1.5",
+    "expo-notifications": "~0.31.4",
     "expo-status-bar": "~2.2.3",
     "phosphor-react-native": "^2.3.1",
     "react": "19.0.0",
@@ -34,17 +38,14 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
     "uuid": "^11.1.0",
-    "zustand": "^5.0.5",
-    "expo-notifications": "~0.31.4",
-    "expo-device": "~7.1.4",
-    "expo-constants": "~17.1.7"
+    "zustand": "^5.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~19.0.10",
     "@types/uuid": "^10.0.0",
-    "typescript": "~5.8.3",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "typescript": "~5.8.3"
   },
   "private": true
 }

@@ -82,7 +82,7 @@ export default function SettingsScreen() {
           onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
           accessibilityLabel="Ouvrir le menu"
         >
-          <List size={26} color="#fff" />
+          <List size={26} weight="regular" color="white" />
         </TouchableOpacity>
         <AppText style={styles.headerTitle} bold>
           Paramètres

@@ -231,7 +231,7 @@ export default function ManagePromptsScreen() {
    */
   const renderCategoryIcon = useCallback(
     (iconName: string, size: number = 16, color: string = "#fff") => {
-      const iconProps = { size, color, weight: "bold" as const };
+      const iconProps = { size, color };
 
       switch (iconName) {
         case "Newspaper":
@@ -274,21 +274,21 @@ export default function ManagePromptsScreen() {
           <View style={styles.promptHeader}>
             <View style={styles.categoryTag}>
               {renderCategoryIcon(category.icon, 14, category.color)}
-              <Text style={[styles.categoryText, { color: category.color }]}>
+              <AppText style={[styles.categoryText, { color: category.color }]}>
                 {category.name}
-              </Text>
+              </AppText>
             </View>
 
             <View style={styles.statusContainer}>
               {isScheduled && (
                 <View style={styles.scheduledBadge}>
                   <Clock size={12} color="#81b0ff" />
-                  <Text style={styles.scheduledText}>{timeText}</Text>
+                  <AppText style={styles.scheduledText}>{timeText}</AppText>
                 </View>
               )}
               {item.response && (
                 <View style={styles.executedBadge}>
-                  <Text style={styles.executedText}>✅</Text>
+                  <AppText style={styles.executedText}>✅</AppText>
                 </View>
               )}
             </View>
@@ -348,7 +348,7 @@ export default function ManagePromptsScreen() {
         <TouchableOpacity
           onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
         >
-          <List size={26} color="#fff" />
+          <List size={26} weight="regular" color="white" />
         </TouchableOpacity>
         <AppText style={styles.headerTitle} bold>
           Gestion des Prompts
@@ -384,14 +384,14 @@ export default function ManagePromptsScreen() {
           ]}
           onPress={() => setFilterType("all")}
         >
-          <Text
+          <AppText
             style={[
               styles.filterText,
               filterType === "all" && styles.filterTextActive,
             ]}
           >
             Tous
-          </Text>
+          </AppText>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -401,14 +401,14 @@ export default function ManagePromptsScreen() {
           ]}
           onPress={() => setFilterType("scheduled")}
         >
-          <Text
+          <AppText
             style={[
               styles.filterText,
               filterType === "scheduled" && styles.filterTextActive,
             ]}
           >
             Planifiés
-          </Text>
+          </AppText>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -418,14 +418,14 @@ export default function ManagePromptsScreen() {
           ]}
           onPress={() => setFilterType("executed")}
         >
-          <Text
+          <AppText
             style={[
               styles.filterText,
               filterType === "executed" && styles.filterTextActive,
             ]}
           >
             Exécutés
-          </Text>
+          </AppText>
         </TouchableOpacity>
 
         {/* Séparateur */}
@@ -439,14 +439,14 @@ export default function ManagePromptsScreen() {
           ]}
           onPress={() => setSelectedCategory("all")}
         >
-          <Text
+          <AppText
             style={[
               styles.filterText,
               selectedCategory === "all" && styles.filterTextActive,
             ]}
           >
             Toutes catégories
-          </Text>
+          </AppText>
         </TouchableOpacity>
 
         {CATEGORIES.map((category) => (
@@ -494,13 +494,13 @@ export default function ManagePromptsScreen() {
           }}
         >
           <FunnelSimple size={16} color="#81b0ff" />
-          <Text style={styles.sortText}>
+          <AppText style={styles.sortText}>
             {sortBy === "date"
               ? "Date"
               : sortBy === "name"
               ? "Nom"
               : "Catégorie"}
-          </Text>
+          </AppText>
         </TouchableOpacity>
       </View>
 
@@ -530,13 +530,13 @@ export default function ManagePromptsScreen() {
         <View style={styles.modalContainer}>
           <View style={styles.modalHeader}>
             <TouchableOpacity onPress={() => setEditModalVisible(false)}>
-              <Text style={styles.modalCancel}>Annuler</Text>
+              <AppText style={styles.modalCancel}>Annuler</AppText>
             </TouchableOpacity>
             <AppText style={styles.modalTitle} bold>
               Éditer le prompt
             </AppText>
             <TouchableOpacity onPress={saveEdit}>
-              <Text style={styles.modalSave}>Sauver</Text>
+              <AppText style={styles.modalSave}>Sauver</AppText>
             </TouchableOpacity>
           </View>
 
@@ -674,6 +674,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 16,
     color: "#fff",
+    fontFamily: "FiraCode-VariableFont", 
   },
 
   filtersContainer: {
@@ -922,6 +923,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     minHeight: 80,
     textAlignVertical: "top",
+    fontFamily: 'FiraCode-VariableFont',
   },
 
   categorySelector: {
