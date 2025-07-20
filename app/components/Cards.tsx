@@ -482,7 +482,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     letterSpacing: -0.3,
     lineHeight: 24,
-    fontFamily: "FiraCode-VariableFont",},
+    fontFamily: "Satoshi-Bold", // ✅ Utilisation de Satoshi pour le titre
+  },
 
   titleLoading: {
     opacity: 0.7,
@@ -528,30 +529,30 @@ const markdownStyles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 15,
     lineHeight: 22,
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-Regular", // ✅ Utilisation de Satoshi pour le contenu
   },
 
   strong: {
     fontWeight: "700",
     color: "#FFFFFF",
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-Bold",
   },
 
   bullet_list: {
     marginBottom: 10,
     marginLeft: 6,
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-Regular",
   },
 
   ordered_list: {
     marginBottom: 10,
     marginLeft: 6,
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-Regular",
   },
 
   list_item: {
     marginBottom: 5,
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-Regular",
   },
 
   heading1: {
@@ -561,7 +562,7 @@ const markdownStyles = StyleSheet.create({
     marginTop: 16,
     color: "#FFFFFF",
     letterSpacing: -0.3,
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-Bold",
   },
 
   heading2: {
@@ -571,7 +572,7 @@ const markdownStyles = StyleSheet.create({
     marginTop: 14,
     color: "#FFFFFF",
     letterSpacing: -0.3,
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-Regular",
   },
 
   heading3: {
@@ -581,18 +582,18 @@ const markdownStyles = StyleSheet.create({
     marginTop: 12,
     color: "#FFFFFF",
     letterSpacing: -0.3,
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-Bold",
   },
 
   paragraph: {
     marginBottom: 10,
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-Regular",
   },
 
   link: {
     color: "#81b0ff",
     textDecorationLine: "underline",
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-Bold",
   },
 
   code_inline: {
@@ -603,7 +604,7 @@ const markdownStyles = StyleSheet.create({
     borderRadius: 4,
     fontSize: 13,
     fontFamily:
-      Platform.OS === "ios" ? "FiraCode-VariableFont" : "FiraCode-VariableFont",
+      Platform.OS === "ios" ? "Satoshi-Bold" : "Satoshi-Regular", // ✅ Satoshi pour le code inline
   },
 
   fence: {
@@ -613,7 +614,7 @@ const markdownStyles = StyleSheet.create({
     marginVertical: 6,
     borderLeftWidth: 3,
     borderLeftColor: "#81b0ff",
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-Regular",
   },
 });
 

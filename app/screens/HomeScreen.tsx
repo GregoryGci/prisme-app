@@ -251,7 +251,7 @@ export default function HomeScreen() {
             <TextInput
               value={searchPrompt}
               onChangeText={setSearchPrompt}
-              placeholder="Tape ton prompt ici..."
+              placeholder="Pose une question à April..."
               placeholderTextColor="#888"
               onSubmitEditing={handleSearchSubmit} // ✅ NOUVEAU : Avec haptic
               onFocus={handleSearchFocus} // ✅ NOUVEAU : Feedback de focus
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     // Optimisation : hauteur fixe
     minHeight: Platform.OS === "ios" ? 20 : 24,
-    fontFamily: "FiraCode-VariableFont", 
+    fontFamily: "Satoshi-LightItalic",  // Utilisation de Satoshi pour la cohérence
   },
 
   emptyContainer: {

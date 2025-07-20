@@ -674,7 +674,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 16,
     color: "#fff",
-    fontFamily: "FiraCode-VariableFont", 
+    fontFamily: "Satoshi-LightItalic", // Utilisation de Satoshi pour la cohérence
   },
 
   filtersContainer: {
@@ -923,7 +923,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     minHeight: 80,
     textAlignVertical: "top",
-    fontFamily: 'FiraCode-VariableFont',
+    fontFamily: 'Satoshi-Regular',
   },
 
   categorySelector: {

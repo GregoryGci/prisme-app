@@ -353,7 +353,7 @@ const styles = StyleSheet.create({
 
   // Titre de l'écran - ORIGINAL EXACT
   title: {
-    fontSize: 22,
+    fontSize: 26,
     textAlign: "center",
     marginBottom: 20,
     color: "#fff",
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     borderWidth: 1,
     borderColor: "rgba(255, 255, 255, 0.06)",
-    fontFamily: "FiraCode-VariableFont",
+    fontFamily: "Satoshi-LightItalic", // Utilisation de Satoshi pour la cohérence
   },
 
   // ✅ NOUVEAU : Section de sélection de catégorie
